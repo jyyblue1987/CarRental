@@ -82,6 +82,15 @@ class CarRental:
         self.cars.append(car)
 
     def get_cars_by_capacity(self, capacity):
+        if capacity is None:
+            raise ValueError("Capacity should not be empty") 
+
+        if isinstance(capacity, int) == False:
+            raise ValueError("Capacity should be integer") 
+
+        if capacity < 1 or capacity > 20:
+            raise ValueError("Capacity should be between 1 and 20")
+        
         return [c for c in self.cars if c.get_capacity() == capacity]
 
     def display_all(self):        
