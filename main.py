@@ -1,3 +1,5 @@
+import unittest
+
 class Car:
     def __init__(self, number, brand, type, capacity):
         self.set_number(number)
@@ -97,7 +99,7 @@ class CarRental:
         if len(self.cars) < 1:
             print("There is no cars in inventory")
             return
-            
+
         headers = ["Number", "Brand", "Type", "Capacity"]
         row_format = "{:>15}" * (len(headers) + 1)
         print(row_format.format("No", *headers))
@@ -127,8 +129,24 @@ def main():
 
     car_rental.display_all()
 
-    
+class TestCarClass(unittest.TestCase):
+    def test_argument_valid(self):        
+        with self.assertRaises(ValueError) as context:
+            car = Car("", "BMW", "Truck", 10)
+
+        with self.assertRaises(ValueError) as context:
+            car = Car("AC123", "", "Truck", 10)
+
+        with self.assertRaises(ValueError) as context:
+            car = Car("AC123", "Benz", "", 10)
+
+        with self.assertRaises(ValueError) as context:
+            car = Car("AC123", "Benz", "Trunk", 0)
+
+        with self.assertRaises(ValueError) as context:
+            car = Car("AC123", "Benz", "Trunk", 100)
     
 
 if __name__ == "__main__":
-    main()
+    # main()
+    unittest.main()
