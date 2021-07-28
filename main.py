@@ -90,10 +90,14 @@ class CarRental:
 
         if capacity < 1 or capacity > 20:
             raise ValueError("Capacity should be between 1 and 20")
-        
+
         return [c for c in self.cars if c.get_capacity() == capacity]
 
     def display_all(self):        
+        if len(self.cars) < 1:
+            print("There is no cars in inventory")
+            return
+            
         headers = ["Number", "Brand", "Type", "Capacity"]
         row_format = "{:>15}" * (len(headers) + 1)
         print(row_format.format("No", *headers))
