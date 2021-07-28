@@ -1,30 +1,67 @@
 class Car:
     def __init__(self, number, brand, type, capacity):
-        self.number = number
-        self.brand = brand
-        self.type = type
-        self.capacity = capacity
+        self.set_number(number)
+        self.set_brand(brand)
+        self.set_type(type)
+        self.set_capacity(capacity)
+
 
     def set_number(self, number):
+        if number is None or number == '':
+            raise ValueError("Number should not be empty") 
+
+        if isinstance(number, str) == False:
+            raise ValueError("Number should be string") 
+
+        if len(number) < 6 or len(number) > 20:
+            raise ValueError("Number length should be between 6 and 20")
+
         self.number = number
 
     def get_number(self):
         return self.number
 
     def set_brand(self, brand):
+        if brand is None or brand == '':
+            raise ValueError("Brand should not be empty") 
+
+        if isinstance(brand, str) == False:
+            raise ValueError("Brand should be string") 
+
+        if len(brand) < 3 or len(brand) > 20:
+            raise ValueError("Brand length should be between 3 and 20")
+
         self.brand = brand
 
     def get_brand(self):
         return self.brand
 
     def set_type(self, type):
+        if type is None or type == '':
+            raise ValueError("Type should not be empty") 
+
+        if isinstance(type, str) == False:
+            raise ValueError("Type should be string") 
+
+        if len(type) < 3 or len(type) > 20:
+            raise ValueError("Type length should be between 3 and 20")
+
         self.type = type
 
     def get_type(self):
         return self.type
 
     def set_capacity(self, capacity):
-        self.type = capacity
+        if capacity is None:
+            raise ValueError("Capacity should not be empty") 
+
+        if isinstance(capacity, int) == False:
+            raise ValueError("Capacity should be integer") 
+
+        if capacity < 1 or capacity > 20:
+            raise ValueError("Capacity should be between 1 and 20")
+
+        self.capacity = capacity
 
     def get_capacity(self):
         return self.capacity
@@ -62,10 +99,11 @@ class CarRental:
 def main():
     car_rental = CarRental()
 
-    car1 = Car('111', 'Benz', 'Sedan', 4)
-    car2 = Car('222', 'Audi', 'SUV', 6)
-    car3 = Car('333', 'BMW', 'Truck', 7)
-
+    car1 = Car('111111', 'Benz', 'Sedan', 4)
+    car2 = Car('222222', 'Audi', 'SUV', 6)
+    car3 = Car('333333', 'BMW', 'Truck', 7)
+    # car4 = Car(444, 'BMW', 'Truck', 7)
+    
     car_rental.add_car(car1)
     car_rental.add_car(car2)
     car_rental.add_car(car3)
