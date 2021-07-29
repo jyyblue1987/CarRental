@@ -1,4 +1,6 @@
 import unittest
+from io import StringIO
+from unittest.mock import patch
 
 class Car:
     def __init__(self, number, brand, type, capacity):
@@ -90,8 +92,8 @@ class CarRental:
         if isinstance(capacity, int) == False:
             raise ValueError("Capacity should be integer") 
 
-        if capacity < 1 or capacity > 20:
-            raise ValueError("Capacity should be between 1 and 20")
+        if capacity < 0:
+            raise ValueError("Capacity argument should be more than or equal to 0")
 
         return [c for c in self.cars if c.get_capacity() == capacity]
 
@@ -145,8 +147,68 @@ class TestCarClass(unittest.TestCase):
 
         with self.assertRaises(ValueError) as context:
             car = Car("AC123", "Benz", "Trunk", 100)
-    
+
+    def test_add_car(self):
+        car_rental = CarRental()
+
+        car1 = Car('111111', 'Benz', 'Sedan', 4)
+        car2 = Car('222222', 'Audi', 'SUV', 6)
+        car3 = Car('333333', 'BMW', 'Truck', 7)
+
+        car_rental.add_car(car1)
+        car_rental.add_car(car2)
+        car_rental.add_car(car3)
+
+        self.assertEqual(len(car_rental.cars), 3)
+
+    def test_get_cars_by_capacity(self):
+        car_rental = CarRental()
+
+        car1 = Car('111111', 'Benz', 'Sedan', 4)
+        car2 = Car('222222', 'Audi', 'SUV', 6)
+        car3 = Car('333333', 'BMW', 'Truck', 7)
+        car4 = Car('444444', 'Lexas', 'SUV', 6)
+
+
+        car_rental.add_car(car1)
+        car_rental.add_car(car2)
+        car_rental.add_car(car3)
+        car_rental.add_car(car4)
+
+        cars_by_capacity_6 = car_rental.get_cars_by_capacity(6)
+        self.assertEqual(len(cars_by_capacity_6), 2)
+
+        cars_by_capacity_7 = car_rental.get_cars_by_capacity(7)
+        self.assertEqual(len(cars_by_capacity_7), 1)
+
+        with self.assertRaises(ValueError) as context:
+            car_by_capacity_error = car_rental.get_cars_by_capacity(-1)
+        
+    def test_display_all(self):
+        car_rental = CarRental()
+
+        car1 = Car('111111', 'Benz', 'Sedan', 4)
+        car2 = Car('222222', 'Audi', 'SUV', 6)
+        car3 = Car('333333', 'BMW', 'Truck', 7)
+
+        car_rental.add_car(car1)
+        car_rental.add_car(car2)
+        car_rental.add_car(car3)
+
+        with patch('sys.stdout', new=StringIO()) as fakeOutput:
+            car_rental.display_all()            
+            self.assertEqual(fakeOutput.getvalue(), 
+                '''             No         Number          Brand           Type       Capacity
+              1         111111           Benz          Sedan              4
+              2         222222           Audi            SUV              6
+              3         333333            BMW          Truck              7
+''')
+        car_rental_empty = CarRental()
+        with patch('sys.stdout', new=StringIO()) as fakeOutput:
+            car_rental_empty.display_all()            
+            self.assertEqual(fakeOutput.getvalue(), 'There is no cars in inventory\n')
+
 
 if __name__ == "__main__":
-    # main()
+    main()
     unittest.main()
