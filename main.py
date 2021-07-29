@@ -86,6 +86,8 @@ class CarRental:
         self.cars.append(car)
 
     def get_cars_by_capacity(self, capacity):
+        if self.cars == None or isinstance(self.cars, list) == False:
+            raise ValueError("Member variable cars should be initialized and it's type should be list") 
         if capacity is None:
             raise ValueError("Capacity should not be empty") 
 
@@ -98,6 +100,9 @@ class CarRental:
         return [c for c in self.cars if c.get_capacity() == capacity]
 
     def display_all(self):        
+        if self.cars == None or isinstance(self.cars, list) == False:
+            raise ValueError("Member variable cars should be initialized and it's type should be list") 
+        
         if len(self.cars) < 1:
             print("There is no cars in inventory")
             return
